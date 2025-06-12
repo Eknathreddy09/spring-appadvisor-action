@@ -13,7 +13,7 @@ cat > /home/runner/.m2/settings.xml << 'EOF'
     <server>
       <id>spring-enterprise-subscription</id>
       <username>eknath.reddy@broadcom.com</username>
-      <password>${secrets.ArtifactoryToken}</password>
+      <password>${ARTIFACTORY_TOKEN}</password>
     </server>
   </servers>
   <profiles>
