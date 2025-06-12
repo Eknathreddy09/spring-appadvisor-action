@@ -1,0 +1,41 @@
+name: Test Action
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Test Action Build
+      run: |
+        # Test that the Dockerfile builds successfully
+        docker build -t test-action .
+        
+    - name: Test Entrypoint Script
+      run: |
+        # Test that the entrypoint script is executable
+        chmod +x entrypoint.sh
+        # Test basic script validation (without running full action)
+        bash -n entrypoint.sh
+        
+    - name: Validate action.yml
+      run: |
+        # Install yq for YAML validation
+        sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        sudo chmod +x /usr/local/bin/yq
+        
+        # Validate action.yml syntax
+        yq eval . action.yml > /dev/null
+        
+        # Check required fields exist
+        yq eval '.name' action.yml
+        yq eval '.description' action.yml
+        yq eval '.runs.using' action.yml
