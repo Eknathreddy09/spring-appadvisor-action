@@ -13,4 +13,5 @@ cat ".advisor/errors/$(ls -t .advisor/errors | head -n1)"
 
 advisor build-config publish
 advisor upgrade-plan get
+cat /home/runner/.m2/settings.xml
 advisor upgrade-plan apply
