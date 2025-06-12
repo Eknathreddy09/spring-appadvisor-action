@@ -76,8 +76,14 @@ install_advisor() {
     # Extract and examine contents
     tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
     
+    ## List
+    ls
+
+    # Check the current Directory
+    pwd
+
     # Move to /usr/local/bin
-    cp "$ADVISOR_BINARY" /usr/local/bin/advisor
+    cp advisor /usr/local/bin/advisor
     chmod +x /usr/local/bin/advisor
     
     # Cleanup
