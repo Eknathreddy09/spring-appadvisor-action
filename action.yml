@@ -1,3 +1,4 @@
+# action.yml
 name: 'Spring Application Advisor'
 description: 'Incrementally upgrade your Spring application dependencies'
 branding:

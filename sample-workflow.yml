@@ -1,30 +1,23 @@
 name: spring-app-advisor-workflow
-
 on:
   push:
     branches:
       - 'main'
-  # Allow manual triggers
-  workflow_dispatch:
-
 jobs:
   app_advisor_job:
     runs-on: ubuntu-latest
     permissions: write-all
     name: Upgrade Spring Application Dependencies
-    
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-        
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: 'liberica'
           java-version: '21'
-          
       - name: Run Spring Application Advisor
-        uses: Eknathreddy09/spring-appadvisor-action@v1.4.0
+        uses: eknathreddy09/spring-appadvisor-action@v1.3.9
         with:
           artifactory_token: ${{ secrets.ArtifactoryToken }}
           git_token: ${{ secrets.GITHUB_TOKEN }}
