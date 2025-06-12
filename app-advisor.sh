@@ -9,7 +9,7 @@ advisor --version
 
 advisor build-config get
 
-cat "$(ls -t .advisor/errors | head -n1)"
+cat ".advisor/errors/$(ls -t .advisor/errors | head -n1)"
 
 advisor build-config publish
 advisor upgrade-plan get
