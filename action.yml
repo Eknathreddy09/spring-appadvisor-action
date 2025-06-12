@@ -1,0 +1,49 @@
+name: 'Spring Application Advisor Action'
+description: 'GitHub Action to run Spring Application Advisor for upgrading Spring application dependencies'
+author: 'eknathreddy09'
+
+inputs:
+  artifactory_token:
+    description: 'Spring Enterprise Maven Repository Token from Broadcom/VMware'
+    required: true
+  git_token:
+    description: 'GitHub token for creating PRs'
+    required: true
+    default: ${{ github.token }}
+  source_path:
+    description: 'Path to the source code directory'
+    required: false
+    default: '.'
+  create_pr:
+    description: 'Whether to create a pull request with changes'
+    required: false
+    default: 'true'
+  pr_title:
+    description: 'Title for the pull request'
+    required: false
+    default: 'Spring Application Advisor: Dependency Upgrades'
+  pr_body:
+    description: 'Body for the pull request'
+    required: false
+    default: 'Automated dependency upgrades using Spring Application Advisor'
+
+outputs:
+  upgrade_status:
+    description: 'Status of the upgrade process'
+  pr_number:
+    description: 'Pull request number if created'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.artifactory_token }}
+    - ${{ inputs.git_token }}
+    - ${{ inputs.source_path }}
+    - ${{ inputs.create_pr }}
+    - ${{ inputs.pr_title }}
+    - ${{ inputs.pr_body }}
+
+branding:
+  icon: 'arrow-up-circle'
+  color: 'green'
