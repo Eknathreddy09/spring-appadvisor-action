@@ -4,6 +4,7 @@ tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
 install /tmp/advisor /usr/local/bin/advisor
 
 java --version
+echo $JAVA_HOME
 advisor --version
 
 advisor build-config get
