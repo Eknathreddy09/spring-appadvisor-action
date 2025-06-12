@@ -9,7 +9,7 @@ advisor --version
 
 advisor build-config get
 
-file=$(ls *.log 2>/dev/null | head -n1) && [ -n "$file" ] && cat "$file"
+cat "$(ls -t .advisor/errors | head -n1)"
 
 advisor build-config publish
 advisor upgrade-plan get
