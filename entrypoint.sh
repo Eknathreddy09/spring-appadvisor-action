@@ -55,37 +55,34 @@ install_advisor() {
     TEMP_DIR=$(mktemp -d)
     cd "$TEMP_DIR"
     
-    # Download the advisor CLI (You'll need to replace this URL with the actual Broadcom download URL)
-    # This is a placeholder - you need to get the actual download URL from Broadcom/VMware
-    VERSION=1.3.1
-    ADVISOR_DOWNLOAD_URL="https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar"
+    # Use the actual Broadcom/VMware download URL
+    # Updated to use the real Spring Application Advisor download endpoint
+
+    ADVISOR_DOWNLOAD_URL="https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/1.3.1/application-advisor-cli-linux-1.3.1.tar"
+    
+    log_info "Downloading from: $ADVISOR_DOWNLOAD_URL"
     
     # Download with authentication
     curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" \
-         -o /tmp/advisor-cli.tar \
+         -o advisor-cli.tar \
          "$ADVISOR_DOWNLOAD_URL" || {
         log_error "Failed to download Spring Application Advisor CLI"
         log_error "Please check your artifactory token and download URL"
         exit 1
     }
     
-    # Extract and install
-    tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
+    log_info "Download completed. Extracting package..."
     
-    # Move to /usr/local/bin or appropriate location
-    if [ -f advisor ]; then
-        mv advisor /usr/local/bin/
-        chmod +x /usr/local/bin/advisor
-    else
-        log_error "Advisor binary not found in downloaded package"
-        exit 1
-    fi
+    # Extract and examine contents
+    tar -xf advisor-cli.tar --strip-components=1 --exclude=./META-INF
+    
+    # Move to /usr/local/bin
+    cp "$ADVISOR_BINARY" /usr/local/bin/advisor
+    chmod +x /usr/local/bin/advisor
     
     # Cleanup
     cd /
     rm -rf "$TEMP_DIR"
-    
-    log_success "Spring Application Advisor CLI installed successfully"
 }
 
 # Function to run advisor commands
