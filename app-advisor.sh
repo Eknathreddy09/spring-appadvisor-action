@@ -3,7 +3,13 @@ curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X
 tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
 install /tmp/advisor /usr/local/bin/advisor
 
+java --version
+advisor --version
+
 advisor build-config get
+
+ls .advisor/errors
+
 advisor build-config publish
 advisor upgrade-plan get
 advisor upgrade-plan apply
