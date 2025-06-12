@@ -11,6 +11,8 @@ advisor build-config get
 
 ls .advisor/errors
 
+cat .advisor/errors/20250612-114016647.log
+
 advisor build-config publish
 advisor upgrade-plan get
 advisor upgrade-plan apply
