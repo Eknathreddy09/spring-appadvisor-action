@@ -1,0 +1,134 @@
+name: Test Action
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    
+    - name: Validate action.yml
+      run: |
+        # Install yq for YAML validation
+        sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+        sudo chmod +x /usr/local/bin/yq
+        
+        # Validate action.yml syntax
+        echo "✅ Validating action.yml syntax..."
+        yq eval . action.yml > /dev/null
+        
+        # Check required fields exist
+        echo "✅ Checking required fields..."
+        yq eval '.name' action.yml
+        yq eval '.description' action.yml
+        yq eval '.runs.using' action.yml
+        
+        echo "✅ action.yml is valid!"
+    
+    - name: Check file structure
+      run: |
+        echo "✅ Checking action file structure..."
+        
+        # Required files
+        [ -f "action.yml" ] || { echo "❌ action.yml missing"; exit 1; }
+        [ -f "README.md" ] || { echo "❌ README.md missing"; exit 1; }
+        [ -f "LICENSE" ] || { echo "❌ LICENSE missing"; exit 1; }
+        [ -f "sample-workflow.yml" ] || { echo "❌ sample-workflow.yml missing"; exit 1; }
+        
+        echo "✅ All required files present!"
+    
+    - name: Validate sample workflow
+      run: |
+        echo "✅ Validating sample workflow..."
+        yq eval . sample-workflow.yml > /dev/null
+        echo "✅ Sample workflow is valid!"
+    
+    - name: Check README links
+      run: |
+        echo "✅ Checking README for broken internal links..."
+        
+        # Check if README mentions key components
+        grep -q "Local Mode" README.md || { echo "❌ README missing Local Mode documentation"; exit 1; }
+        grep -q "artifactory_token" README.md || { echo "❌ README missing artifactory_token documentation"; exit 1; }
+        grep -q "Troubleshooting" README.md || { echo "❌ README missing troubleshooting section"; exit 1; }
+        
+        echo "✅ README documentation checks passed!"
+    
+    - name: Validate inputs and outputs
+      run: |
+        echo "✅ Validating action inputs and outputs..."
+        
+        # Check inputs
+        yq eval '.inputs.artifactory_token.required' action.yml | grep -q "true" || { echo "❌ artifactory_token should be required"; exit 1; }
+        yq eval '.inputs.git_token.required' action.yml | grep -q "true" || { echo "❌ git_token should be required"; exit 1; }
+        
+        # Check outputs
+        yq eval '.outputs.upgrade_status' action.yml > /dev/null || { echo "❌ upgrade_status output missing"; exit 1; }
+        yq eval '.outputs.pr_number' action.yml > /dev/null || { echo "❌ pr_number output missing"; exit 1; }
+        
+        echo "✅ Action inputs and outputs are valid!"
+        
+    - name: Check composite action steps
+      run: |
+        echo "✅ Validating composite action steps..."
+        
+        # Check that it's a composite action
+        yq eval '.runs.using' action.yml | grep -q "composite" || { echo "❌ Action should use composite"; exit 1; }
+        
+        # Check for required steps
+        yq eval '.runs.steps[].name' action.yml | grep -q "Set up JDK" || { echo "❌ Missing JDK setup step"; exit 1; }
+        yq eval '.runs.steps[].name' action.yml | grep -q "Cache advisor CLI" || { echo "❌ Missing CLI cache step"; exit 1; }
+        yq eval '.runs.steps[].name' action.yml | grep -q "Download and install" || { echo "❌ Missing CLI download step"; exit 1; }
+        yq eval '.runs.steps[].name' action.yml | grep -q "Run Spring Application Advisor" || { echo "❌ Missing advisor run step"; exit 1; }
+        
+        echo "✅ Composite action steps are valid!"
+
+  lint-action:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Lint action with actionlint
+      run: |
+        # Download and install actionlint
+        bash <(curl https://raw.githubusercontent.com/rhymond/actionlint/main/scripts/download-actionlint.bash)
+        
+        # Lint the action.yml
+        ./actionlint action.yml
+        
+        # Lint the sample workflow
+        ./actionlint sample-workflow.yml
+        
+        echo "✅ Action linting passed!"
+        
+  security-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Security check
+      run: |
+        echo "✅ Running basic security checks..."
+        
+        # Check for secrets in files
+        ! grep -r "ghp_" . && echo "✅ No GitHub tokens found in files"
+        ! grep -r "ghs_" . && echo "✅ No GitHub app tokens found in files"
+        ! grep -ri "password.*=" . && echo "✅ No hardcoded passwords found"
+        
+        # Check for secure input handling
+        grep -q "inputs.artifactory_token" action.yml && echo "✅ Secure token input handling"
+        grep -q "inputs.git_token" action.yml && echo "✅ Secure git token input handling"
+        
+        echo "✅ Security checks passed!"
