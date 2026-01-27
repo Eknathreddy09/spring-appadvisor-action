@@ -9,7 +9,6 @@ inputs:
   artifactory_token:
     description: 'Token for Spring Enterprise Subscription'
     required: true
-
   git_token:
     description: 'Authentication token for generating pull requests against repo'
     required: true
