@@ -27,6 +27,24 @@ runs:
       with:
         distribution: liberica
         java-version: '21'
+    - name: Cache advisor CLI
+      uses: actions/cache@v4
+      with:
+        path: /usr/local/bin/advisor
+        key: advisor-cli-1.5.4
+
+    - name: Download and install
+      shell: bash
+      run: |
+        VERSION=1.5.4
+        curl -L \
+          -H "Authorization: Bearer $ARTIFACTORY_TOKEN" \
+          -o /tmp/advisor-cli.tar \
+          https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
+        tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
+        install /tmp/advisor /usr/local/bin/advisor
+      env:
+        ARTIFACTORY_TOKEN: ${{ inputs.artifactory_token }}
         
     - name: Run Spring Application Advisor
       run: ${{ github.action_path }}/app-advisor.sh
