@@ -23,4 +23,5 @@ jobs:
         with:
           artifactory_token: ${{ secrets.ArtifactoryToken }}
           git_token: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           advisor_version: '1.5.4' 
