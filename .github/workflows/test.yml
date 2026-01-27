@@ -101,10 +101,13 @@ jobs:
     - name: Lint action with actionlint
       run: |
         # Download and install actionlint
-        VERSION="1.7.8"
+        VERSION="1.7.10"
         uname -r
         curl -sL "https://github.com/rhysd/actionlint/releases/download/v${VERSION}/actionlint_${VERSION}_linux_amd64.tar.gz" -o actionlint.tar.gz
+        ls
         tar -xzf actionlint.tar.gz
+        ls -ltrh
+        ls man
         mv man/actionlint.1 man/actionlint
         sudo mv man/actionlint /usr/local/bin/actionlint
         sudo chmod +x /usr/local/bin/actionlint
