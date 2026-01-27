@@ -105,10 +105,10 @@ jobs:
         chmod +x /usr/local/bin/actionlint
         
         # Lint the action.yml
-        ./actionlint action.yml
+        actionlint action.yml
         
         # Lint the sample workflow
-        ./actionlint sample-workflow.yml
+        actionlint sample-workflow.yml
         
         echo "✅ Action linting passed!"
         
