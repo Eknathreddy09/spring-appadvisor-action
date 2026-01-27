@@ -83,7 +83,7 @@ Auto-generated commit by GitHub Actions"
   
   # Create a Pull Request (optional)
   # You can use GitHub CLI if available, or the GitHub API
-  gh auth status || echo "gh auth failed"
+  gh auth status
   gh pr create \
     --title "Spring Upgrade using SAA" \
     --body "This PR contains automatic upgrades applied by Spring Application Advisor."
