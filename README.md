@@ -25,4 +25,13 @@ Configure the following environment variable on the runner host:
 ```bash
 ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/opt/runner/advisor_script.sh
 
+## Inputs
+
+| Name | Required | Description |
+|-----|--------|------------|
+| `artifactory_token` | ✅ Yes | Spring Enterprise Subscription token used to download the Application Advisor CLI and access Spring Enterprise repositories |
+| `git_token` | ✅ Yes | GitHub token used to create branches and pull requests for applied upgrades |
+
+
+
 
