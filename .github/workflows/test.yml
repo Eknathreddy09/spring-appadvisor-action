@@ -103,6 +103,7 @@ jobs:
         # Download and install actionlint
         VERSION="1.7.10"
         uname -r
+        lsb_release -a
         curl -sL "https://github.com/rhysd/actionlint/releases/download/v${VERSION}/actionlint_${VERSION}_linux_amd64.tar.gz" -o actionlint.tar.gz
         ls
         tar -xzf actionlint.tar.gz
