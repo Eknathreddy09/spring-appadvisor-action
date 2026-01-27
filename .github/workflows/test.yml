@@ -106,7 +106,9 @@ jobs:
         tar -xzf actionlint.tar.gz
         mv man/actionlint.1 man/actionlint
         sudo mv man/actionlint /usr/local/bin/actionlint
-        chmod +x /usr/local/bin/actionlint
+        sudo chmod +x /usr/local/bin/actionlint
+
+        actionlint --version 
         
         # Lint the action.yml
         actionlint action.yml
