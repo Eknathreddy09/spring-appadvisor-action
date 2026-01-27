@@ -101,7 +101,13 @@ jobs:
     - name: Lint action with actionlint
       run: |
         # Download and install actionlint
-        curl -sL https://github.com/rhymond/actionlint/releases/download/v1.6.15/actionlint_linux_amd64 -o /usr/local/bin/actionlint
+        VERSION="1.7.8"
+        curl -sL "https://github.com/rhysd/actionlint/releases/download/v${VERSION}/actionlint_${VERSION}_linux_amd64.tar.gz" -o actionlint.tar.gz
+        tar -xzf actionlint.tar.gz
+        ls -ltrh
+        pwd 
+        ls man
+        sudo mv actionlint /usr/local/bin/actionlint
         chmod +x /usr/local/bin/actionlint
         
         # Lint the action.yml
