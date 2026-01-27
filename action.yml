@@ -22,8 +22,10 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-java@v4
+    - name: Set up JDK
+      uses: actions/setup-java@v4
       with:
+        distribution: liberica
         java-version: '21'
         
     - name: Run Spring Application Advisor
