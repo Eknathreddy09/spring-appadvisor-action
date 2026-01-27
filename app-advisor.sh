@@ -1,8 +1,4 @@
 VERSION=1.5.4
-export GH_TOKEN="${GH_TOKEN}"
-export GH_TOKEN="${GH_TOKEN:-$GITHUB_TOKEN}"
-echo "GH_TOKEN length: ${##GH_TOKEN}"
-
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
 tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
 install /tmp/advisor /usr/local/bin/advisor
@@ -49,7 +45,6 @@ cat > /home/runner/.m2/settings.xml << 'EOF'
 EOF
 
 advisor build-config get
-
 advisor build-config publish
 advisor upgrade-plan get
 
@@ -99,3 +94,22 @@ Auto-generated commit by GitHub Actions"
 else
   echo "No changes to commit"
 fi
+
+
+git branch -M "$BRANCH_NAME"
+
+export TANZU_PLATFORM_URL=https://tanzuhub.app.eknathenv.tanzupartnerdemo.com
+export TANZU_PLATFORM_OAUTH_APP_ID=1aFIzmvPd4iK11P8y05Ol0MecD1VNid
+export TANZU_PLATFORM_OAUTH_APP_SECRET=e5mX2eMxLp8d6RGGzqST0s26Ovs7ooEKtHOhiJAANNvarg
+export TANZU_PLATFORM_API_ID=ff76209e-da6d-4341-9db9-ae531b59d4a8
+export TANZU_PLATFORM_ORG_ID=ecdff0a6-8e68-4d43-8f90-9ac02a265082
+
+echo $TANZU_PLATFORM_URL
+echo $TANZU_PLATFORM_OAUTH_APP_ID
+echo $TANZU_PLATFORM_API_ID
+echo $TANZU_PLATFORM_ORG_ID
+
+echo $JAVA_HOME
+
+advisor build-config get
+advisor build-config publish
