@@ -2,8 +2,7 @@ VERSION=1.5.4
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
 tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
 install /tmp/advisor /usr/local/bin/advisor
-ls -a /home/runner/
-mkdir -p /home/runner/.m2
+
 cat > /home/runner/.m2/settings.xml << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
 <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
