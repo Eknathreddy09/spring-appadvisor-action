@@ -17,7 +17,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Spring Application Advisor
-        uses: eknathreddy09/spring-appadvisor-action@v1
+        uses: eknathreddy09/spring-appadvisor-action@v1.5.4
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           artifactory_token: ${{ secrets.ArtifactoryToken }}
           git_token: ${{ secrets.GITHUB_TOKEN }}
