@@ -85,7 +85,7 @@ Auto-generated commit by GitHub Actions"
   # You can use GitHub CLI if available, or the GitHub API
   gh pr create \
     --title "Spring Upgrade using SAA" \
-    --body "This PR contains automatic upgrades applied by Spring Application Advisor.
+    --body "This PR contains automatic upgrades applied by Spring Application Advisor."
 
 **Changes Applied:**
 - Java version upgraded from 8 to 11
