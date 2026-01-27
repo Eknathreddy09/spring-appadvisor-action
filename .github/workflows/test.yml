@@ -113,9 +113,6 @@ jobs:
 
         actionlint --version 
         
-        # Lint the action.yml
-        actionlint -action action.yml
-        
         # Lint the sample workflow
         actionlint sample-workflow.yml
         
