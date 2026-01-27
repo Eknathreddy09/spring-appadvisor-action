@@ -1,4 +1,8 @@
 VERSION=1.5.4
+export GH_TOKEN="${GH_TOKEN}"
+export GH_TOKEN="${GH_TOKEN:-$GITHUB_TOKEN}"
+echo "GH_TOKEN length: ${##GH_TOKEN}"
+
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
 tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
 install /tmp/advisor /usr/local/bin/advisor
