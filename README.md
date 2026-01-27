@@ -32,6 +32,13 @@ ACTIONS_RUNNER_HOOK_JOB_COMPLETED=/opt/runner/advisor_script.sh
 | `artifactory_token` | ✅ Yes | Spring Enterprise Subscription token used to download the Application Advisor CLI and access Spring Enterprise repositories |
 | `git_token` | ✅ Yes | GitHub token used to create branches and pull requests for applied upgrades |
 
+## Troubleshooting
+
+If the action fails:
+- Verify `artifactory_token` is valid
+- Ensure the Spring Enterprise repository is reachable
+- Check Advisor CLI logs in the workflow output
+
 
 
 
