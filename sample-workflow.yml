@@ -16,12 +16,6 @@ jobs:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'liberica'
-          java-version: '21'
-
       - name: Run Spring Application Advisor
         uses: eknathreddy09/spring-appadvisor-action@v1
         with:
