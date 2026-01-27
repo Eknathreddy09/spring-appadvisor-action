@@ -52,4 +52,5 @@ runs:
       env:
         ARTIFACTORY_TOKEN: ${{ inputs.artifactory_token }}
         GIT_TOKEN_FOR_PRS: ${{ inputs.git_token }}
+        GH_TOKEN: ${{ inputs.git_token }}
         ADVISOR_VERSION: ${{ inputs.advisor_version }}
