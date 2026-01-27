@@ -4,19 +4,28 @@ description: 'Incrementally upgrade your Spring application dependencies'
 branding:
   icon: user-check
   color: green
+
 inputs:
   artifactory_token:
     description: 'Token for Spring Enterprise Subscription'
     required: true
+
   git_token:
     description: 'Authentication token for generating pull requests against repo'
     required: true
+
+  advisor_version:
+    description: 'Spring Application Advisor CLI version'
+    required: false
+    default: '1.5.4'
+
 runs:
   using: 'composite'
   steps:
-    - name: Run App Advisor
+    - name: Run Spring Application Advisor
       run: ${{ github.action_path }}/app-advisor.sh
       shell: bash
       env:
         ARTIFACTORY_TOKEN: ${{ inputs.artifactory_token }}
         GIT_TOKEN_FOR_PRS: ${{ inputs.git_token }}
+        ADVISOR_VERSION: ${{ inputs.advisor_version }}
