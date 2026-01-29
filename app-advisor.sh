@@ -1,13 +1,16 @@
 VERSION=1.5.4
 # Install Cloud Foundry CLI
-echo "Installing Cloud Foundry CLI..."
-curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" -o /tmp/cf.tgz
-tar -xzf /tmp/cf.tgz -C /tmp
-sudo rm -f /usr/local/bin/cf
-sudo install /tmp/cf /usr/local/bin/cf
-chmod +x /usr/local/bin/cf
+CF_TMP_DIR="$RUNNER_TEMP/cf"
+mkdir -p "$CF_TMP_DIR"
 
-command -v cf || { echo "cf CLI not found"; exit 1; }
+curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" -o "$CF_TMP_DIR/cf.tgz"
+tar -xzf "$CF_TMP_DIR/cf.tgz" -C "$CF_TMP_DIR"
+
+# Remove existing dangling symlink if present
+sudo rm -f /usr/local/bin/cf
+
+# Install cf binary
+sudo install "$CF_TMP_DIR/cf" /usr/local/bin/cf
 
 cf --version
 
