@@ -3,8 +3,12 @@ VERSION=1.5.4
 echo "Installing Cloud Foundry CLI..."
 curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" -o /tmp/cf.tgz
 tar -xzf /tmp/cf.tgz -C /tmp
-sudo mv /tmp/cf /usr/local/bin/cf
+sudo rm -f /usr/local/bin/cf
+sudo install /tmp/cf /usr/local/bin/cf
 chmod +x /usr/local/bin/cf
+
+command -v cf || { echo "cf CLI not found"; exit 1; }
+
 cf --version
 
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
