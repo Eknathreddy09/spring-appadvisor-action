@@ -16,7 +16,7 @@ inputs:
   advisor_version:
     description: 'Spring Application Advisor CLI version'
     required: false
-    default: '1.5.4'
+    default: '1.6.5'
 
 runs:
   using: 'composite'
@@ -30,12 +30,12 @@ runs:
       uses: actions/cache@v4
       with:
         path: /usr/local/bin/advisor
-        key: advisor-cli-1.5.4
+        key: advisor-cli-${{ inputs.advisor_version }}
 
     - name: Download and install
       shell: bash
       run: |
-        VERSION=1.5.4
+        VERSION="$ADVISOR_VERSION"
         curl -L \
           -H "Authorization: Bearer $ARTIFACTORY_TOKEN" \
           -o /tmp/advisor-cli.tar \
@@ -44,6 +44,7 @@ runs:
         install /tmp/advisor /usr/local/bin/advisor
       env:
         ARTIFACTORY_TOKEN: ${{ inputs.artifactory_token }}
+        ADVISOR_VERSION: ${{ inputs.advisor_version }}
         
     - name: Run Spring Application Advisor
       run: ${{ github.action_path }}/app-advisor.sh
