@@ -1,18 +1,4 @@
 VERSION="${ADVISOR_VERSION:?ADVISOR_VERSION environment variable is required}"
-# Install Cloud Foundry CLI
-CF_TMP_DIR="$RUNNER_TEMP/cf"
-mkdir -p "$CF_TMP_DIR"
-
-curl -L "https://packages.cloudfoundry.org/stable?release=linux64-binary&source=github" -o "$CF_TMP_DIR/cf.tgz"
-tar -xzf "$CF_TMP_DIR/cf.tgz" -C "$CF_TMP_DIR"
-
-# Remove existing dangling symlink if present
-sudo rm -f /usr/local/bin/cf
-
-# Install cf binary
-sudo install "$CF_TMP_DIR/cf" /usr/local/bin/cf
-
-cf --version
 
 curl -L -H "Authorization: Bearer $ARTIFACTORY_TOKEN" -o /tmp/advisor-cli.tar -X GET https://packages.broadcom.com/artifactory/spring-enterprise/com/vmware/tanzu/spring/application-advisor-cli-linux/$VERSION/application-advisor-cli-linux-$VERSION.tar
 tar -xf /tmp/advisor-cli.tar --strip-components=1 -C /tmp
@@ -59,8 +45,8 @@ cat > /home/runner/.m2/settings.xml << 'EOF'
 </settings>
 EOF
 
-#advisor build-config get
-#advisor build-config publish
+advisor build-config get
+advisor build-config publish
 advisor upgrade-plan get
 
 advisor upgrade-plan apply
@@ -80,8 +66,8 @@ if [[ -n $(git status --porcelain) ]]; then
   # Add all changes
   git add .
   
-  # Commit with descriptive message
-  git commit -m "Spring Application Advisor: Upgrade Java 8 to 11
+# Commit with descriptive message
+git commit -m "Spring Application Advisor: Upgrade Java 8 to 11
 
 Applied by Spring Application Advisor v$VERSION
 
@@ -106,22 +92,4 @@ else
   echo "No changes to commit"
 fi
 
-
 git branch -M "$BRANCH_NAME"
-
-## Deploy the app into TP using CF push 
-#cf api "$CF_API"
-#cf auth "$CF_USERNAME" "$CF_PASSWORD"
-#cf target -o "$CF_ORG" -s "$CF_SPACE"
-
-#cf push
-
-## Add to the repository in Hub 
-
-#export TANZU_PLATFORM_URL="$TANZU_PLATFORM_URL"
-#export TANZU_PLATFORM_OAUTH_APP_ID="$TANZU_PLATFORM_OAUTH_APP_ID"
-#export TANZU_PLATFORM_OAUTH_APP_SECRET="$TANZU_PLATFORM_OAUTH_APP_SECRET"
-#export TANZU_PLATFORM_API_ID="$TANZU_PLATFORM_API_ID"
-#export TANZU_PLATFORM_ORG_ID="$TANZU_PLATFORM_ORG_ID"
-
-#advisor build-config publish -d
