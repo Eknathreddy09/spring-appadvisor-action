@@ -45,8 +45,6 @@ cat > /home/runner/.m2/settings.xml << 'EOF'
 </settings>
 EOF
 
-advisor build-config get
-advisor build-config publish
 advisor upgrade-plan get
 
 advisor upgrade-plan apply
