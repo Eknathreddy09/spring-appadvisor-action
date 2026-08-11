@@ -45,7 +45,7 @@ cat > /home/runner/.m2/settings.xml << 'EOF'
 </settings>
 EOF
 
-advisor upgrade-plan get
+advisor upgrade-plan get | tee /tmp/advisor-upgrade-plan.log
 
 advisor upgrade-plan apply
 
@@ -63,16 +63,24 @@ if [[ -n $(git status --porcelain) ]]; then
   
   # Add all changes
   git add .
-  
+
+  # Pull the Step 1 changes out of the upgrade plan for the commit message
+  STEP1_CHANGES=$(awk '
+    /- Step 1:/ { infound=1; next }
+    /- Step [0-9]+:/ { if (infound) exit }
+    infound && /\*/ { sub(/^[[:space:]]*\*[[:space:]]*/, ""); print "- " $0 }
+  ' /tmp/advisor-upgrade-plan.log)
+  if [[ -z "$STEP1_CHANGES" ]]; then
+    STEP1_CHANGES="- See workflow logs for full upgrade plan details"
+  fi
+
 # Commit with descriptive message
-git commit -m "Spring Application Advisor: Upgrade Java 8 to 11
+git commit -m "Spring Application Advisor: Apply dependency upgrades
 
 Applied by Spring Application Advisor v$VERSION
 
 Changes:
-- Updated Java version from 8 to 11
-- Updated Maven/Gradle configuration
-- Applied necessary code transformations
+$STEP1_CHANGES
 
 Auto-generated commit by GitHub Actions"
   
